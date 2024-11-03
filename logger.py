@@ -1,11 +1,18 @@
 import logging
 import sys
+from datetime import datetime
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-handler.setFormatter(formatter)
+stdout_handler = logging.StreamHandler(sys.stdout)
+file_handler = logging.FileHandler("./log/pokemon_{}".format(datetime.now().strftime("%Y-%m-%d")), mode="a")
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-logger.addHandler(handler)
+def init_logger(name:str, level=logging.INFO) -> logging.Logger:
+    logging.basicConfig(
+            level=level,
+            format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            handlers=[stdout_handler, file_handler]
+            )
+    return logging.getLogger(name)
+
+
+
+
