@@ -1,4 +1,5 @@
 # IGNORE files
 *.env
 *.log
+log/
 data/
