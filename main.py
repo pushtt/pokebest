@@ -6,10 +6,12 @@ import polars as pl
 
 if __name__ == "__main__":
     poke_api = PokeAPI(logger_level=logging.INFO)
-    for pokemon in poke_api.get_endpoint(PokemonEndPoints.Pokemon):
-        poke_api.to_csv(poke_api.get_endpoint(PokemonEndPoints.Pokemon, pokemon["name"]),
-                        filename="{}".format(pokemon["name"]),
-                        endpoint=PokemonEndPoints.Pokemon)
+    generation = poke_api.get_endpoint(PokemonEndPoints.Generation)
+    data = []
+    for g in generation:
+        data.append(poke_api.get_endpoint(PokemonEndPoints.Generation, g["name"]))
+
+    poke_api.to_csv(data, "generation", PokemonEndPoints.Generation)
     # df = pl.from_dicts(results)
     # # df.write_csv("./data/pokemon.csv")
     # df = pl.read_csv("./data/pokemon.csv")

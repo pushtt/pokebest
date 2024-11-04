@@ -69,6 +69,9 @@ class PokeAPIError(Exception):
     pass
 
 
+class DataFrame:
+    pass
+
 class PokeAPI:
     def __init__(self,
                  version:int = 2,
@@ -126,8 +129,16 @@ class PokeAPI:
 
     @staticmethod
     def to_csv(data, filename, endpoint):
-        with open(f"./data/{endpoint}/{filename}.csv", mode="a", newline="") as csvfile:
-            fieldnames = data.keys()
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerow(data)
+        if type(data) == dict:
+            with open(f"./data/{endpoint}/{filename}.csv", mode="a", newline="") as csvfile:
+                fieldnames = data.keys()
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerow(data)
+        elif type(data) == list:
+            with open(f"./data/{endpoint}/{filename}.csv", mode="a", newline="") as csvfile:
+                fieldnames = data[0].keys()
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for row in data:
+                    writer.writerow(row)
